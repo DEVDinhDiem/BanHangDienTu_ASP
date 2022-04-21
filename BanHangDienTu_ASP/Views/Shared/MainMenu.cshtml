@@ -1,0 +1,14 @@
+﻿@model List<ModelDb.EntityFramework.Menu>
+
+
+
+<div class="menu">
+    <ul>
+        @foreach (var item in Model)
+        {
+            <li><a href="@item.Link" title="@item.Text" target="@item.Target">@item.Text</a></li>
+        }
+
+        
+    </ul>
+</div>

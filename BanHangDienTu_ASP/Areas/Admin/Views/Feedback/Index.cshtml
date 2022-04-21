@@ -1,0 +1,259 @@
+﻿@model PagedList.IPagedList<ModelDb.EntityFramework.Feedback>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<style>
+
+    .pagination {
+        display: inline-block;
+        padding-left: 0;
+        margin: 20px 0;
+        border-radius: 4px;
+    }
+
+        .pagination > li {
+            display: inline;
+        }
+
+            .pagination > li > a,
+            .pagination > li > span {
+                position: relative;
+                float: left;
+                padding: 6px 12px;
+                margin-left: -1px;
+                line-height: 1.428571429;
+                text-decoration: none;
+                background-color: #ffffff;
+                border: 1px solid #dddddd;
+            }
+
+            .pagination > li:first-child > a,
+            .pagination > li:first-child > span {
+                margin-left: 0;
+                border-bottom-left-radius: 4px;
+                border-top-left-radius: 4px;
+            }
+
+            .pagination > li:last-child > a,
+            .pagination > li:last-child > span {
+                border-top-right-radius: 4px;
+                border-bottom-right-radius: 4px;
+            }
+
+            .pagination > li > a:hover,
+            .pagination > li > span:hover,
+            .pagination > li > a:focus,
+            .pagination > li > span:focus {
+                background-color: #eeeeee;
+            }
+
+        .pagination > .active > a,
+        .pagination > .active > span,
+        .pagination > .active > a:hover,
+        .pagination > .active > span:hover,
+        .pagination > .active > a:focus,
+        .pagination > .active > span:focus {
+            z-index: 2;
+            color: #ffffff;
+            cursor: default;
+            background-color: #428bca;
+            border-color: #428bca;
+        }
+
+        .pagination > .disabled > span,
+        .pagination > .disabled > a,
+        .pagination > .disabled > a:hover,
+        .pagination > .disabled > a:focus {
+            color: #999999;
+            cursor: not-allowed;
+            background-color: #ffffff;
+            border-color: #dddddd;
+        }
+
+    .pagination-lg > li > a,
+    .pagination-lg > li > span {
+        padding: 10px 16px;
+        font-size: 18px;
+    }
+
+    .pagination-lg > li:first-child > a,
+    .pagination-lg > li:first-child > span {
+        border-bottom-left-radius: 6px;
+        border-top-left-radius: 6px;
+    }
+
+    .pagination-lg > li:last-child > a,
+    .pagination-lg > li:last-child > span {
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
+    }
+
+    .pagination-sm > li > a,
+    .pagination-sm > li > span {
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+
+    .pagination-sm > li:first-child > a,
+    .pagination-sm > li:first-child > span {
+        border-bottom-left-radius: 3px;
+        border-top-left-radius: 3px;
+    }
+
+    .pagination-sm > li:last-child > a,
+    .pagination-sm > li:last-child > span {
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
+    }
+
+    .pager {
+        padding-left: 0;
+        margin: 20px 0;
+        text-align: center;
+        list-style: none;
+    }
+
+        .pager:before,
+        .pager:after {
+            display: table;
+            content: " ";
+        }
+
+        .pager:after {
+            clear: both;
+        }
+
+        .pager:before,
+        .pager:after {
+            display: table;
+            content: " ";
+        }
+
+        .pager:after {
+            clear: both;
+        }
+
+        .pager li {
+            display: inline;
+        }
+
+            .pager li > a,
+            .pager li > span {
+                display: inline-block;
+                padding: 5px 14px;
+                background-color: #ffffff;
+                border: 1px solid #dddddd;
+                border-radius: 15px;
+            }
+
+                .pager li > a:hover,
+                .pager li > a:focus {
+                    text-decoration: none;
+                    background-color: #eeeeee;
+                }
+
+        .pager .next > a,
+        .pager .next > span {
+            float: right;
+        }
+
+        .pager .previous > a,
+        .pager .previous > span {
+            float: left;
+        }
+
+        .pager .disabled > a,
+        .pager .disabled > a:hover,
+        .pager .disabled > a:focus,
+        .pager .disabled > span {
+            color: #999999;
+            cursor: not-allowed;
+            background-color: #ffffff;
+        }
+</style>
+@section header{
+    Danh sách feedback
+}
+
+@section jsFooter{
+
+    <script src="~/assets/Admin/js/controller/feedbackController.js"></script>
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Danh sách feedback</h6>
+    </div>
+    @using (Html.BeginForm("Index", "Feedback", FormMethod.Get))
+    {
+
+
+        <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-9 my-2 my-md-0 mw-100 navbar-search">
+            <div class="input-group">
+                <div class="col-md-4">
+                    <input type="text" value="@ViewBag.SearchString" class="form-control" placeholder="Nhập vào đây để tìm kiếm!"
+                           aria-label="Search" aria-describedby="basic-addon2" name="searchString" />
+                </div>
+                <div class="col md-4">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-search fa-sm"></i>
+
+                    </button>
+                    
+                </div>
+            </div>
+        </form>
+    }
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+
+                <thead>
+                    <tr>
+                        <th>Tên</th>
+                        <th>Điện thoại</th>
+                        <th>Email</th>
+                        <th>Địa chỉ</th>
+                        <th>Ngày đăng</th>
+                        <th>Trạng thái</th>
+                        <th>#</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr id="row_@item.ID">
+                            <td>@item.Name</td>
+                            <td>@item.Phone</td>
+                            <td>@item.Email</td>
+                            <td>@item.Address</td>
+                            <td>@item.CreatedDate</td>
+                            <td><a href="#" class="btn-active" data-id="@item.ID">@Html.Raw(item.Status ? "<strong>Kích hoạt</strong>" : "Khoá")</a></td>
+                            <td>
+                               
+                                @Ajax.ActionLink("Xoá", "Delete", new { @id = item.ID }, new AjaxOptions
+                           {
+                               Confirm = "Bạn có muốn xoá bản ghi này?",
+                               OnComplete = "$('#row_" + @item.ID + "').remove()",
+                               HttpMethod = "Delete"
+                           })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col-sm-12 col-md-5">
+                    Trang @(Model.PageCount<Model.PageNumber?0:Model.PageNumber)of @Model.PageCount
+                </div>
+                <div class="col-sm-12 col-md-9">
+                    @Html.PagedListPager(Model, Page => Url.Action("Index", new { Page, @searchString = @ViewBag.SearchString }))
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

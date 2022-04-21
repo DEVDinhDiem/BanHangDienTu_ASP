@@ -1,0 +1,162 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var slides = (List<ModelDb.EntityFramework.Slide>)ViewBag.Slides;
+    var listNewProducts = (List<ModelDb.EntityFramework.Product>)ViewBag.NewProducts;
+    var listFeatureProducts = (List<ModelDb.EntityFramework.Product>)ViewBag.ListFeatureProducts;
+    var listNewProductIphone = (List<ModelDb.EntityFramework.Product>)ViewBag.ListNewProductIphone;
+}
+@section slide
+{
+    <div class="header_slide">
+        <div class="header_bottom_left">
+            <div class="categories">
+                @{ Html.RenderAction("ProductCategory", "Product");}
+            </div>
+        </div>
+        <div class="header_bottom_right">
+            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                <!-- Indicators -->
+                <ol class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                </ol>
+
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner">
+                    @{ int index = 0;}
+                    @foreach (var slider in slides)
+                    {
+                        if (index == 0)
+                        {
+                            <div class="item active">
+                                <img src="@slider.Image" />
+
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="item">
+                                <img src="@slider.Image" />
+                            </div>
+                        }
+                        index++;
+
+
+                    }
+                </div>
+
+                <!-- Left and right controls -->
+                @*<a class="left carousel-control" href="#" data-slide="prev">
+                    <span class="fas fa-angle-left"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" href="#" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                    <span class="sr-only">Next</span>
+                </a>*@
+            </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+}
+<!-- Set up your HTML -->
+<!-- other sections here -->
+<div class="content">
+    <div class="content_top">
+        <div class="heading">
+            <h3>Sản phẩm mới</h3>
+        </div>
+        @*<div class="see">
+                <p><a href="/san-pham">See all Products</a></p>
+            </div>*@
+        <div class="clear"></div>
+    </div>
+    <div class="section group">
+        @foreach (var item in listNewProducts)
+        {
+            var url = "/chi-tiet/" + item.MetaTitle + "-" + item.ID;
+            <div class="grid_1_of_4 images_1_of_4">
+                <a href="@url"><img src="@item.Image" alt="@item.Name" /></a>
+                <h2>@item.Name</h2>
+                <div class="price-details">
+                    <div class="price-number">
+                        <p><span class="rupees">@(item.Price.HasValue ? item.Price.Value.ToString("N0") : "Liên hệ")</span></p>
+                    </div>
+                    <div class="add-cart">
+                        <h4><a href="/them-gio-hang?productId=@item.ID&quantity=1">Thêm vào giỏ</a></h4>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        }
+
+    </div>
+    <div class="content_bottom">
+        <div class="heading">
+            <h3>Sản phẩm hot</h3>
+        </div>
+        <div class="see">
+            <p><a href="/san-pham">Xem tất cả</a></p>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="section group">
+        @foreach (var item in listFeatureProducts)
+        {
+            var url = "/chi-tiet/" + item.MetaTitle + "-" + item.ID;
+            <div class="grid_1_of_4 images_1_of_4">
+                <a href="@url"><img src="@item.Image" alt="@item.Name" /></a>
+                <h2>@item.Name</h2>
+                <div class="price-details">
+                    <div class="price-number">
+                        <p><span class="rupees">@(item.Price.HasValue ? item.Price.Value.ToString("N0") : "Liên hệ")</span></p>
+                    </div>
+                    <div class="add-cart">
+                        <h4><a href="/them-gio-hang?productId=@item.ID&quantity=1">Thêm vào giỏ</a></h4>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="content_bottom">
+        <div class="heading">
+            <h3>Sản phẩm Iphone</h3>
+        </div>
+        <div class="see">
+            <p><a href="/san-pham">Xem tất cả</a></p>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="section group">
+        @foreach (var item in listNewProductIphone)
+        {
+            var url = "/chi-tiet/" + item.MetaTitle + "-" + item.ID;
+            <div class="grid_1_of_4 images_1_of_4">
+                <a href="@url"><img src="@item.Image" alt="@item.Name" /></a>
+                <h2>@item.Name</h2>
+                <div class="price-details">
+                    <div class="price-number">
+                        <p><span class="rupees">@(item.Price.HasValue ? item.Price.Value.ToString("N0") : "Liên hệ")</span></p>
+                    </div>
+                    <div class="add-cart">
+                        <h4><a href="/them-gio-hang?productId=@item.ID&quantity=1">Thêm vào giỏ</a></h4>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@section Scrips
+{
+    <script type="text/javascript">
+        $("#carouse1").carousel(
+            {
+                interval: 2000
+            }
+        );
+    </script>
+}
